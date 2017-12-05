@@ -2,11 +2,10 @@
     'use strict';
 
     let movies = [];
+    let goFlag = false
 
     const renderMovies = function () {
-        $( '#listings' ).empty();
-
-
+        if ( goFlag === false ) return
         for ( let movie of movies ) {
             if ( !movie.Title ) return
             const $col = $( '<div>' ).addClass( 'col s6' );
@@ -65,8 +64,14 @@
     $( '#regularSearch' ).click( function ( e ) {
         e.preventDefault()
         $.get( 'http://www.omdbapi.com/?apikey=702b3bb5&t=' + $( '#search' ).val(), function ( data ) {
-            movies.push( data )
-            renderMovies()
+            goFlag = true
+            for ( let movie in movies ) {
+                if ( movies[ movie ].Title === data.Title ) goFlag = false
+            }
+            if ( goFlag ) {
+                movies.push( data )
+                renderMovies()
+            }
         } ).fail( function ( err ) {
             console.log( err )
         } )
