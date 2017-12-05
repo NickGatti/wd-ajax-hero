@@ -1,60 +1,73 @@
-(function() {
-  'use strict';
+( function () {
+    'use strict';
 
-  const movies = [];
+    let movies = [];
 
-  const renderMovies = function() {
-    $('#listings').empty();
+    const renderMovies = function () {
+        $( '#listings' ).empty();
 
-    for (const movie of movies) {
-      const $col = $('<div>').addClass('col s6');
-      const $card = $('<div>').addClass('card hoverable');
-      const $content = $('<div>').addClass('card-content center');
-      const $title = $('<h6>').addClass('card-title truncate');
 
-      $title.attr({
-        'data-position': 'top',
-        'data-tooltip': movie.title
-      });
+        for ( let movie of movies ) {
+            const $col = $( '<div>' ).addClass( 'col s6' );
+            const $card = $( '<div>' ).addClass( 'card hoverable' );
+            const $content = $( '<div>' ).addClass( 'card-content center' );
+            const $Title = $( '<h6>' ).addClass( 'card-Title truncate' );
 
-      $title.tooltip({ delay: 50 }).text(movie.title);
+            $Title.attr( {
+                'data-position': 'top',
+                'data-tooltip': movie.Title
+            } );
 
-      const $poster = $('<img>').addClass('poster');
+            $Title.tooltip( {
+                delay: 50
+            } ).text( movie.Title );
 
-      $poster.attr({
-        src: movie.poster,
-        alt: `${movie.poster} Poster`
-      });
+            const $Poster = $( '<img>' ).addClass( 'Poster' );
 
-      $content.append($title, $poster);
-      $card.append($content);
+            $Poster.attr( {
+                src: movie.Poster,
+                alt: `${movie.Poster} Poster`
+            } );
 
-      const $action = $('<div>').addClass('card-action center');
-      const $plot = $('<a>');
+            $content.append( $Title, $Poster );
+            $card.append( $content );
 
-      $plot.addClass('waves-effect waves-light btn modal-trigger');
-      $plot.attr('href', `#${movie.id}`);
-      $plot.text('Plot Synopsis');
+            const $action = $( '<div>' ).addClass( 'card-action center' );
+            const $plot = $( '<a>' );
 
-      $action.append($plot);
-      $card.append($action);
+            $plot.addClass( 'waves-effect waves-light btn modal-trigger' );
+            $plot.attr( 'href', `#${movie.id}` );
+            $plot.text( 'Plot Synopsis' );
 
-      const $modal = $('<div>').addClass('modal').attr('id', movie.id);
-      const $modalContent = $('<div>').addClass('modal-content');
-      const $modalHeader = $('<h4>').text(movie.title);
-      const $movieYear = $('<h6>').text(`Released in ${movie.year}`);
-      const $modalText = $('<p>').text(movie.plot);
+            $action.append( $plot );
+            $card.append( $action );
 
-      $modalContent.append($modalHeader, $movieYear, $modalText);
-      $modal.append($modalContent);
+            const $modal = $( '<div>' ).addClass( 'modal' ).attr( 'id', movie.id );
+            const $modalContent = $( '<div>' ).addClass( 'modal-content' );
+            const $modalHeader = $( '<h4>' ).text( movie.Title );
+            const $movieYear = $( '<h6>' ).text( `Released in ${movie.year}` );
+            const $modalText = $( '<p>' ).text( movie.plot );
 
-      $col.append($card, $modal);
+            $modalContent.append( $modalHeader, $movieYear, $modalText );
+            $modal.append( $modalContent );
 
-      $('#listings').append($col);
+            $col.append( $card, $modal );
 
-      $('.modal-trigger').leanModal();
-    }
-  };
+            $( '#listings' ).append( $col );
 
-  // ADD YOUR CODE HERE
-})();
+            $( '.modal-trigger' ).leanModal();
+        }
+    };
+
+    // ADD YOUR CODE HERE
+
+    $( 'button' ).click( function ( e ) {
+        e.preventDefault()
+        $.get( 'http://www.omdbapi.com/?apikey=702b3bb5&t=' + $( '#search' ).val(), function ( data ) {
+            movies.push( data )
+            renderMovies()
+        } ).fail( function ( err ) {
+            console.log( err )
+        } )
+    } )
+} )();
