@@ -29,8 +29,6 @@
                 alt: `${movie.Poster} Poster`
             } );
 
-            console.log( movie );
-
             $content.append( $Title, $Poster );
             $card.append( $content );
 
@@ -63,9 +61,21 @@
 
     // ADD YOUR CODE HERE
 
-    $( 'button' ).click( function ( e ) {
+    $( '#regularSearch' ).click( function ( e ) {
         e.preventDefault()
         $.get( 'http://www.omdbapi.com/?apikey=702b3bb5&t=' + $( '#search' ).val(), function ( data ) {
+            movies.push( data )
+            renderMovies()
+        } ).fail( function ( err ) {
+            console.log( err )
+        } )
+    } )
+
+    $( '#luckySearch' ).click( function ( e ) {
+        e.preventDefault()
+        $.get( 'http://www.omdbapi.com/?apikey=702b3bb5&t=' + $( '#search' ).val(), function ( data ) {
+            movies = []
+            $( '#listing' ).empty()
             movies.push( data )
             renderMovies()
         } ).fail( function ( err ) {
