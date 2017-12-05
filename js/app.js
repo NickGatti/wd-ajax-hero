@@ -8,6 +8,7 @@
 
 
         for ( let movie of movies ) {
+            if ( !movie.Title ) return
             const $col = $( '<div>' ).addClass( 'col s6' );
             const $card = $( '<div>' ).addClass( 'card hoverable' );
             const $content = $( '<div>' ).addClass( 'card-content center' );
