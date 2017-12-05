@@ -29,6 +29,8 @@
                 alt: `${movie.Poster} Poster`
             } );
 
+            console.log( movie );
+
             $content.append( $Title, $Poster );
             $card.append( $content );
 
@@ -36,17 +38,17 @@
             const $plot = $( '<a>' );
 
             $plot.addClass( 'waves-effect waves-light btn modal-trigger' );
-            $plot.attr( 'href', `#${movie.id}` );
+            $plot.attr( 'href', `#${movie.imdbID}` );
             $plot.text( 'Plot Synopsis' );
 
             $action.append( $plot );
             $card.append( $action );
 
-            const $modal = $( '<div>' ).addClass( 'modal' ).attr( 'id', movie.id );
+            const $modal = $( '<div>' ).addClass( 'modal' ).attr( 'id', movie.imdbID );
             const $modalContent = $( '<div>' ).addClass( 'modal-content' );
             const $modalHeader = $( '<h4>' ).text( movie.Title );
-            const $movieYear = $( '<h6>' ).text( `Released in ${movie.year}` );
-            const $modalText = $( '<p>' ).text( movie.plot );
+            const $movieYear = $( '<h6>' ).text( `Released in ${movie.Year}` );
+            const $modalText = $( '<p>' ).text( movie.Plot );
 
             $modalContent.append( $modalHeader, $movieYear, $modalText );
             $modal.append( $modalContent );
