@@ -81,13 +81,12 @@
             }
         } ).fail( function ( err ) {
             goFlag = false
-            console.log( err )
         } )
     } )
 
     $( '#luckySearch' ).click( function ( e ) {
         e.preventDefault()
-        $.get( 'http://www.omdbapi.com/?apikey=702b3bb5&t=' + $( '#search' ).val(), function ( data ) {
+        $.get( 'http://www.omdbapi.com/?apikey=702b3bb5&t=' + $( '#search' ).val() + '&plot=full', function ( data ) {
             goFlag = true
             movies = []
             $( '#listings' ).empty()
@@ -95,7 +94,6 @@
             renderMovies()
         } ).fail( function ( err ) {
             goFlag = false
-            console.log( err )
         } )
     } )
 } )();
