@@ -11,25 +11,25 @@
             const $col = $( '<div>' ).addClass( 'col s6' );
             const $card = $( '<div>' ).addClass( 'card hoverable' );
             const $content = $( '<div>' ).addClass( 'card-content center' );
-            const $Title = $( '<h6>' ).addClass( 'card-Title truncate' );
+            const $title = $( '<h6>' ).addClass( 'card-title truncate' );
 
-            $Title.attr( {
+            $title.attr( {
                 'data-position': 'top',
                 'data-tooltip': movie.Title
             } );
 
-            $Title.tooltip( {
+            $title.tooltip( {
                 delay: 50
             } ).text( movie.Title );
 
-            const $Poster = $( '<img>' ).addClass( 'Poster' );
+            const $poster = $( '<img>' ).addClass( 'poster' );
 
-            $Poster.attr( {
+            $poster.attr( {
                 src: movie.Poster,
                 alt: `${movie.Poster} Poster`
             } );
 
-            $content.append( $Title, $Poster );
+            $content.append( $title, $poster );
             $card.append( $content );
 
             const $action = $( '<div>' ).addClass( 'card-action center' );
@@ -63,16 +63,24 @@
 
     $( '#regularSearch' ).click( function ( e ) {
         e.preventDefault()
-        $.get( 'http://www.omdbapi.com/?apikey=702b3bb5&t=' + $( '#search' ).val(), function ( data ) {
+        $.get( 'http://www.omdbapi.com/?apikey=702b3bb5&s=' + $( '#search' ).val(), function ( data ) {
             goFlag = true
             for ( let movie in movies ) {
                 if ( movies[ movie ].Title === data.Title ) goFlag = false
             }
             if ( goFlag ) {
-                movies.push( data )
+                movies = []
+                $( '#listings' ).empty()
+                if ( !data.Search ) {
+                    return;
+                }
+                for ( let i = 0; i < data.Search.length; i++ ) {
+                    movies.push( data.Search[ i ] )
+                }
                 renderMovies()
             }
         } ).fail( function ( err ) {
+            goFlag = false
             console.log( err )
         } )
     } )
@@ -80,11 +88,13 @@
     $( '#luckySearch' ).click( function ( e ) {
         e.preventDefault()
         $.get( 'http://www.omdbapi.com/?apikey=702b3bb5&t=' + $( '#search' ).val(), function ( data ) {
+            goFlag = true
             movies = []
-            $( '#listing' ).empty()
+            $( '#listings' ).empty()
             movies.push( data )
             renderMovies()
         } ).fail( function ( err ) {
+            goFlag = false
             console.log( err )
         } )
     } )
